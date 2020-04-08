@@ -2,6 +2,14 @@ pico-8 cartridge // http://www.pico-8.com
 version 18
 __lua__
 --main
+
+STATE={}
+STATE.IDLE=0
+STATE.WALK_DOWN=1
+STATE.WALK_UP=2
+STATE.WALK_LEFT=3
+STATE.WALK_RIGHT=4
+
 function _init()
 	make_player()
 	make_coins()
@@ -26,26 +34,26 @@ function make_player()
 	player.y=64
 	player.sprite=2
 	player.timer=0
-	player.state=0
+	player.state=STATE.IDLE
 end
 
 function move_player()
 	player.timer+=1
 	if (btn(⬅️)) then 
 		player.x-=1 
-		change_state(player,1)
+		change_state(player,STATE.WALK_LEFT)
 	elseif (btn(➡️)) then 
 		player.x+=1 
-		change_state(player,1)
+		change_state(player,STATE.WALK_RIGHT)
 	elseif (btn(⬆️)) then
 		player.y-=1 
-		change_state(player,1)
+		change_state(player,STATE.WALK_UP)
 	elseif (btn(⬇️)) then 
 		player.y+=1 
-		change_state(player,1)
+		change_state(player,STATE.WALK_DOWN)
 		move_down()
 	else
-		change_state(player,0)
+		change_state(player,STATE.IDLE)
 		idle()
 	end
 end
